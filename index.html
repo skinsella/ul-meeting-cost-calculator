@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="University of Limerick meeting opportunity-cost calculator">
+  <title>UL Meeting Cost Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{background:radial-gradient(circle at 92% 8%,#e0f6bc 0,rgba(224,246,188,0) 22rem),var(--paper)}
+    .masthead{border-bottom-color:#9db8a8}.wordmark{display:flex;align-items:center;gap:2px}.wordmark span{display:inline-grid;place-items:center;width:38px;height:38px;background:var(--ink);color:var(--acid);border-radius:50%;font-size:19px;margin-right:6px}
+    .hero{max-width:none;min-height:360px;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;position:relative;overflow:hidden}.hero-copy{position:relative;z-index:1}.hero h1{font-size:clamp(58px,8.2vw,104px)}.hero-prompt{font:12px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.04em;color:#326353;margin:28px 0 0}.hero-prompt span{font-size:19px;color:#dc674c;margin-right:8px;vertical-align:-2px}
+    .meeting-orbit{width:265px;height:265px;border:1px dashed #679b78;border-radius:50%;justify-self:end;position:relative;margin-right:40px;background:rgba(185,233,197,.35);box-shadow:inset 0 0 0 24px rgba(245,243,234,.65),0 15px 50px rgba(46,104,70,.13)}.orbit-label{position:absolute;inset:80px 52px;text-align:center;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:#f5f3ea;font:14px Fraunces,serif;letter-spacing:-.03em;line-height:1.1}.orbit-node{width:18px;height:18px;border-radius:50%;position:absolute;background:#dc674c;border:3px solid var(--paper)}.node-one{top:15px;left:120px}.node-two{right:17px;bottom:65px;background:var(--acid)}.node-three{bottom:26px;left:50px;background:#77cda2}.orbit-tick{position:absolute;width:40px;border-top:1px solid #477a63}.tick-one{top:42px;left:40px;transform:rotate(35deg)}.tick-two{right:32px;top:105px;transform:rotate(-55deg)}.tick-three{left:75px;bottom:48px;transform:rotate(-20deg)}
+    .calculator{border:0;box-shadow:0 18px 46px rgba(20,48,39,.13);border-radius:5px;overflow:hidden}.controls-panel{background:linear-gradient(120deg,#fbfaf4,#f3f6ed)}.result-panel{position:relative;overflow:hidden;background:linear-gradient(155deg,#b9e9c5,#9eddb1)}.result-panel:after{content:"";position:absolute;width:250px;height:250px;border:1px solid rgba(16,42,39,.18);border-radius:50%;right:-115px;bottom:-130px}.cost-pulse{display:flex;align-items:center;gap:5px;height:16px;margin-bottom:18px}.cost-pulse span{height:5px;border-radius:8px;background:var(--ink);animation:pulse 1.8s ease-in-out infinite}.cost-pulse span:nth-child(1){width:18px}.cost-pulse span:nth-child(2){width:44px;animation-delay:.2s}.cost-pulse span:nth-child(3){width:25px;animation-delay:.4s}@keyframes pulse{50%{transform:scaleX(1.35);transform-origin:left}}.annual-cost{background:rgba(245,243,234,.33);padding:16px;margin:22px -10px 0;border:0;border-radius:3px}.metric-grid{position:relative;z-index:1}.copy-summary{position:relative;z-index:2;border-radius:2px;background:rgba(245,243,234,.38)}.copy-summary:hover{background:var(--ink)}
+    .duration-option,.cadence-option,.template-controls button{border-radius:999px;transition:transform .15s ease,background .15s ease}.duration-option:hover,.cadence-option:hover,.template-controls button:hover{transform:translateY(-2px);background:var(--acid)}.field select,.field input,.custom-duration input,.assumption input,.on-cost input{border-radius:3px;transition:border-color .15s ease,box-shadow .15s ease}.field select:focus,.field input:focus,.custom-duration input:focus,.assumption input:focus,.on-cost input:focus{outline:0;border-color:#377a5f;box-shadow:0 0 0 3px rgba(119,205,162,.3)}.section-label{display:flex;align-items:center;gap:7px}.section-label:after{content:"";height:1px;background:#ccd7ca;flex:1}.section-label span{background:#e3f7bd;border-radius:50%;width:20px;height:20px;display:grid;place-items:center;margin-right:0;color:#1d6248}.source-card{position:relative;overflow:hidden;border-radius:4px;background:linear-gradient(125deg,#102a27,#174b3e)}.source-card:after{content:"";position:absolute;width:390px;height:390px;border:1px solid rgba(214,240,95,.35);border-radius:50%;right:-145px;top:-185px}.source-card>*{position:relative;z-index:1}
+    @media(max-width:720px){.hero{grid-template-columns:1fr;min-height:auto;padding-bottom:40px}.meeting-orbit{width:150px;height:150px;margin:32px 0 0;justify-self:start}.orbit-label{inset:45px 27px;font-size:12px}.node-one{top:5px;left:65px}.node-two{right:5px;bottom:35px}.node-three{bottom:10px;left:25px}.tick-one{top:25px;left:24px}.tick-two{right:15px;top:62px}.tick-three{left:40px;bottom:24px}.annual-cost{margin-left:0;margin-right:0}}
+    .quick-note{display:flex;align-items:baseline;gap:11px;margin-bottom:21px}.quick-note span{font:600 11px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:#1d6248;background:#e3f7bd;border-radius:999px;padding:7px 10px}.quick-note p{margin:0;font-size:12px;color:var(--muted)}.advanced-planning{border-bottom:1px solid var(--line)}.advanced-planning summary{cursor:pointer;list-style:none;padding:18px 0;color:#326353;font-size:13px;font-weight:600}.advanced-planning summary::-webkit-details-marker{display:none}.advanced-planning summary span{float:right;font-size:17px;transition:transform .2s}.advanced-planning[open] summary span{transform:rotate(180deg)}.advanced-planning .cadence-wrap,.advanced-planning .template-wrap{padding-left:0;padding-right:0}.participant-actions{display:flex;justify-content:space-between;align-items:center;gap:12px}.point-toggle{font-size:12px;font-weight:500;color:var(--muted);display:flex;gap:6px;align-items:center;margin:20px 0 0}.point-toggle input{accent-color:#1f7054}.attendee{grid-template-columns:minmax(190px,1fr) 92px 30px}.attendee .point-field{display:none}.attendees.show-points .attendee{grid-template-columns:minmax(140px,1fr) minmax(135px,1fr) 76px 30px}.attendees.show-points .point-field{display:block}.result-panel{justify-content:flex-start}.result-panel .metric-grid{margin-top:25px}.result-panel .copy-summary{margin-top:auto}.currency{font-size:clamp(62px,7vw,90px)}@media(max-width:720px){.quick-note{display:block}.quick-note p{margin-top:8px}.attendee{grid-template-columns:minmax(150px,1fr) 72px 22px}.attendees.show-points .attendee{grid-template-columns:minmax(105px,1fr) minmax(105px,1fr) 52px 18px}.participant-actions{align-items:flex-start;flex-direction:column;gap:0}.point-toggle{margin-top:10px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <a class="wordmark" href="#top" aria-label="UL Meeting Cost Calculator home"><span>UL</span> Meeting cost</a>
+      <p class="source-status"><span class="status-dot"></span> Salary scale effective 1 June 2026</p>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Opportunity cost, made visible</p>
+        <h1>What does this<br>meeting cost?</h1>
+        <p class="lede">Estimate the salary opportunity cost of the people in the room. Start with one role or build a mixed meeting.</p>
+        <p class="hero-prompt"><span>⟡</span> A small tool for better use of collective time</p>
+      </div>
+      <div class="meeting-orbit" aria-hidden="true"><div class="orbit-label">Time<br>in room</div><i class="orbit-node node-one"></i><i class="orbit-node node-two"></i><i class="orbit-node node-three"></i><span class="orbit-tick tick-one"></span><span class="orbit-tick tick-two"></span><span class="orbit-tick tick-three"></span></div>
+    </section>
+
+    <section class="calculator" aria-label="Meeting cost calculator">
+      <div class="controls-panel">
+        <div class="quick-note"><span>Quick estimate</span><p>Choose a duration, rank, and headcount</p></div>
+        <div class="section-label"><span>01</span> Meeting length</div>
+        <div class="duration-wrap">
+          <label for="duration">Length</label>
+          <div class="segmented" role="group" aria-label="Meeting length">
+            <button class="duration-option active" data-minutes="30" type="button">30 min</button>
+            <button class="duration-option" data-minutes="60" type="button">1 hour</button>
+            <button class="duration-option" data-minutes="90" type="button">90 min</button>
+            <button class="duration-option" data-minutes="120" type="button">2 hours</button>
+          </div>
+          <div class="custom-duration"><label for="duration">Or enter minutes</label><input id="duration" min="1" max="480" type="number" value="30"></div>
+        </div>
+
+        <details class="advanced-planning">
+          <summary>Plan a recurring meeting or use a template <span>⌄</span></summary>
+        <div class="cadence-wrap">
+          <label for="occurrences">How often will it happen?</label>
+          <div class="segmented" role="group" aria-label="Meeting frequency">
+            <button class="cadence-option active" data-occurrences="1" type="button">One-off</button>
+            <button class="cadence-option" data-occurrences="12" type="button">Monthly</button>
+            <button class="cadence-option" data-occurrences="20" type="button">Fortnightly</button>
+            <button class="cadence-option" data-occurrences="40" type="button">Weekly</button>
+          </div>
+          <div class="custom-duration"><label for="occurrences">Or annual occurrences</label><input id="occurrences" min="1" max="366" type="number" value="1"></div>
+        </div>
+
+        <div class="template-wrap">
+          <label for="templateSelect">Start from a meeting template</label>
+          <div class="template-controls"><select id="templateSelect" aria-label="Meeting template"><option value="">Choose a template</option><option value="school">School meeting</option><option value="research">Research group</option><option value="programme">Programme board</option><option value="recruitment">Recruitment panel</option></select><button id="saveScenario" type="button">Save this scenario</button></div>
+          <p class="saved-note" id="savedNote">Templates make assumptions visible before you invite people</p>
+        </div>
+        </details>
+
+        <div class="section-label participants-label"><span>02</span> Who is in the room?</div>
+        <div id="attendees" class="attendees"></div>
+        <div class="participant-actions"><button class="add-row" id="addRow" type="button"><span>+</span> Add another role</button><label class="point-toggle"><input id="showPoints" type="checkbox"> Choose salary point</label></div>
+      </div>
+
+      <aside class="result-panel" aria-live="polite">
+        <div class="cost-pulse" id="costPulse"><span></span><span></span><span></span></div>
+        <p class="result-label">Salary opportunity cost</p>
+        <div class="currency" id="totalCost">€0</div>
+        <p class="cost-context" id="costContext">for this 30 minute meeting</p>
+        <div class="annual-cost"><span id="annualLabel">Annualised cost</span><strong id="annualCost">€0</strong></div>
+        <div class="metric-grid">
+          <div><span>People</span><strong id="totalPeople">0</strong></div>
+          <div><span>Per hour</span><strong id="hourlyCost">€0</strong></div>
+        </div>
+        <button type="button" class="copy-summary" id="copySummary">Copy summary</button>
+      </aside>
+    </section>
+
+    <section class="method">
+      <div>
+        <p class="eyebrow">How it works</p>
+        <h2>Useful as a prompt,<br>not a price tag</h2>
+      </div>
+      <div class="method-copy">
+        <p>Each listed role uses the middle point of its University of Limerick gross annual salary scale. The calculator divides annual salary by 52 weeks and your chosen working hours per week, then multiplies by attendance and meeting length.</p>
+        <div class="assumption"><label for="weeklyHours">Working hours per week</label><input id="weeklyHours" type="number" min="1" max="80" step="0.5" value="35"><span>hours</span></div>
+        <div class="on-cost"><label><input id="includeOnCost" type="checkbox"> Include a user-set employer on-cost</label><div id="onCostField" hidden><label for="onCostRate">Employer on-cost rate</label><input id="onCostRate" type="number" min="0" max="100" step="0.1" value="0"><span>%</span></div></div>
+        <p class="fine-print">Salary-only is the default. An on-cost estimate is optional and must be supplied by the user. Neither measure includes buildings, equipment, preparation or follow-up time. This is not a payroll or budget cost.</p>
+      </div>
+    </section>
+
+    <section class="source-card">
+      <div><p class="eyebrow">Data note</p><h2>Kept current<br>twice a year</h2></div>
+      <div class="source-detail"><p>Salary inputs are taken from UL Human Resources published salary scales. The next review is scheduled for <strong>9 April 2027</strong>.</p><a href="https://www.ul.ie/hr/staff-support/salary-information" target="_blank" rel="noopener">View UL salary information <span>↗</span></a></div>
+    </section>
+  </main>
+  <footer><span>University of Limerick meeting cost calculator</span><span id="costBasis">Salary-only estimate</span></footer>
+  <script src="app.js"></script>
+</body>
+</html>
